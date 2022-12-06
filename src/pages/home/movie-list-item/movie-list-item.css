@@ -1,0 +1,24 @@
+
+.movie-item {
+    display: flex;
+    position: relative;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+}
+
+.movie-img {
+    margin: 10px;
+    border-radius: 10px;
+    height: 180px;
+}
+
+.movie-card {
+    height: 200px;
+    box-shadow: none!important;
+    background: none!important;
+}
+
+.card-buttons {
+    position: absolute;
+    bottom: 0;
+}
