@@ -23,6 +23,7 @@ export const MovieListItem = ({ searchResult, searchHappened }) => {
 							<img
 								className="movie-img"
 								src={`https://image.tmdb.org/t/p/w500${result.poster_path}`}
+								onClick={() => handleMovieDetails(result.id)}
 							/>
 						)}
 						<Card

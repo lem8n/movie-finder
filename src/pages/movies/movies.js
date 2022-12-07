@@ -5,6 +5,7 @@ import { MovieListItem } from './movie-list-item/movie-list-item';
 import { PaginationItem } from './pagination/pagination';
 import { searchMovies } from '../../api/tmdb';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 export const Movies = ({
 	searchPhrase,
@@ -40,16 +41,44 @@ export const Movies = ({
 				setTotalPages(movies.data.total_pages);
 				setPage(1);
 				setSearchResult(movies.data.results);
+				navigate(`/movies?query=${searchInput}&page=1`);
 			}
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
+	useEffect(() => {
+		// Handle browser back button
+		window.onpopstate = () => {
+			const location = window.location;
+			if (location.search && location.pathname === '/movies') {
+				const params = location.search.split('&');
+				const searchParam = params[0].split('=');
+				const pageParam = params[1].split('=');
+				searchMovies(searchParam[1], pageParam[1])
+					.then((movies) => {
+						setTotalPages(movies.data.total_pages);
+						setPage(parseInt(pageParam[1]));
+						setSearchResult(movies.data.results);
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+			}
+		};
+	}, []);
+
 	return (
 		<div>
 			<div className="search-container">
-				<IconButton onClick={() => navigate('/')} className="logo-button">
+				<IconButton
+					onClick={() => {
+						navigate('/');
+						setSearchInput('');
+					}}
+					className="logo-button"
+				>
 					<img className="logo" src={`/assets/logo.png`} />
 				</IconButton>
 				<TextField
@@ -66,6 +95,7 @@ export const Movies = ({
 					}}
 					className="search-bar"
 					label="Search for a movie..."
+					defaultValue={searchPhrase}
 					variant="outlined"
 					color="common"
 					onChange={(evt) => setSearchInput(evt.target.value)}
