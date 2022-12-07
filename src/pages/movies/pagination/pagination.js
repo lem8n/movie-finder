@@ -11,14 +11,14 @@ export const PaginationItem = ({
 	searchPhrase,
 }) => {
 	const navigate = useNavigate();
-	const handlePageChange = async (page) => {
+	const handlePageChange = async (pageToGo) => {
 		try {
-			const movies = await searchMovies(searchPhrase, page);
+			const movies = await searchMovies(searchPhrase, pageToGo);
 			window.scroll(0, 0);
 			if (movies) {
-				setPage(page);
+				setPage(pageToGo);
 				setSearchResult(movies.data.results);
-				navigate(`/movies?query=${searchPhrase}&page=${page}`);
+				navigate(`/movies?query=${searchPhrase}&page=${pageToGo}`);
 			}
 		} catch (error) {
 			console.log(error);

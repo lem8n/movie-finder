@@ -43,7 +43,13 @@ export const Home = ({
 
 	return (
 		<div className="search-container">
-			<IconButton onClick={() => navigate('/')} className="logo-button">
+			<IconButton
+				onClick={() => {
+					navigate('/');
+					setSearchInput('');
+				}}
+				className="logo-button"
+			>
 				<img className="logo" src={`/assets/logo.png`} />
 			</IconButton>
 			<TextField
