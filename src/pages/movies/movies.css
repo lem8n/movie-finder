@@ -1,3 +1,10 @@
+.stack-container {
+    position: relative;
+    margin-top: 20px;
+    left: 10%;
+    width: 80%;
+}
+
 .search-container {
     margin-top: 20px!important;
     display: flex;
@@ -21,8 +28,8 @@
     transform: translateY(5px);
 }
 
-
 .logo {
     position: relative;
     height: 100px;
 }
+

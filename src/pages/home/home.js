@@ -1,18 +1,20 @@
 import './home.css';
-import { IconButton, Stack, TextField } from '@mui/material';
+import { IconButton, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import ArrowBack from '@mui/icons-material/ArrowBack';
-import { MovieListItem } from './movie-list-item/movie-list-item';
-import { PaginationItem } from './pagination/pagination';
 import { searchMovies } from '../../api/tmdb';
-import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-export const Home = () => {
-	const [searchInput, setSearchInput] = useState('');
-	const [searchPhrase, setSearchPhrase] = useState('');
-	const [searchResult, setSearchResult] = useState([]);
-	const [totalPages, setTotalPages] = useState(0);
-	const [searchHappened, setSearchHappened] = useState(false);
+export const Home = ({
+	setSearchPhrase,
+	setTotalPages,
+	page,
+	setPage,
+	searchInput,
+	setSearchInput,
+	setSearchHappened,
+	setSearchResult,
+}) => {
+	const navigate = useNavigate();
 
 	const handleSearch = async (evt) => {
 		// Don't trigger for any key except the enter key
@@ -26,12 +28,13 @@ export const Home = () => {
 		 * if the user decides to change the search word but continue iterating through the pages of the previous search
 		 */
 		setSearchPhrase(searchInput);
-
 		try {
 			const movies = await searchMovies(searchInput, 1);
 			if (movies) {
 				setTotalPages(movies.data.total_pages);
 				setSearchResult(movies.data.results);
+				setPage(1);
+				navigate(`/movies?query=${searchInput}&page=${page}`);
 			}
 		} catch (error) {
 			console.log(error);
@@ -39,7 +42,10 @@ export const Home = () => {
 	};
 
 	return (
-		<div>
+		<div className="search-container">
+			<IconButton onClick={() => navigate('/')} className="logo-button">
+				<img className="logo" src={`/assets/logo.png`} />
+			</IconButton>
 			<TextField
 				InputProps={{
 					endAdornment: (
@@ -55,19 +61,6 @@ export const Home = () => {
 				onChange={(evt) => setSearchInput(evt.target.value)}
 				onKeyDown={handleSearch}
 			/>
-			<Stack spacing={2} className="stack-container">
-				<MovieListItem
-					searchResult={searchResult}
-					searchHappened={searchHappened}
-				/>
-			</Stack>
-			{searchResult.length > 0 && (
-				<PaginationItem
-					totalPages={totalPages}
-					setSearchResult={setSearchResult}
-					searchPhrase={searchPhrase}
-				/>
-			)}
 		</div>
 	);
 };

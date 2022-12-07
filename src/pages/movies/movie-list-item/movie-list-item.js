@@ -25,9 +25,17 @@ export const MovieListItem = ({ searchResult, searchHappened }) => {
 								src={`https://image.tmdb.org/t/p/w500${result.poster_path}`}
 							/>
 						)}
-						<Card className="movie-card">
+						<Card
+							className="movie-card"
+							onClick={() => handleMovieDetails(result.id)}
+						>
 							<CardContent>
-								<Typography gutterBottom variant="h5" component="div">
+								<Typography
+									gutterBottom
+									variant="h5"
+									component="div"
+									className="movie-title"
+								>
 									{result.title}
 								</Typography>
 								<Typography variant="body2" color="text.secondary">

@@ -1,11 +1,3 @@
-.search-bar {
-    margin-top: 20px!important;
-    border-radius: 5px;
-    background: rgba(255, 255, 255, 0.4);
-    left: 20%;
-    width: 60%;
-}
-
 .movie-container {
     padding: 10px;
     margin: 20px;
@@ -23,6 +15,14 @@
 .details-card {
     box-shadow: none!important;
     background: none!important;
+}
+
+.back-button {
+    border-radius: 0!important;
+}
+
+.back-button:hover {
+    background: rgba(82, 74, 29, 0.5) !important;
 }
 
 .description {

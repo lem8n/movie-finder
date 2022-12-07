@@ -2,21 +2,39 @@ import { Card, CardContent, IconButton, Typography } from '@mui/material';
 import './movie-details.css';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { fetchMovieDetails } from '../../api/tmdb';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { fetchMovieDetails, searchMovies } from '../../api/tmdb';
 
-export const MovieDetails = () => {
+export const MovieDetails = ({
+	searchPhrase,
+	page,
+	setSearchResult,
+	setTotalPages,
+}) => {
 	const location = useLocation();
 	const movieId = location.search.split('=')[1];
 	const [movieDetails, setMovieDetails] = useState({});
 	const [movieGenres] = useState([]);
 	const [productionCompanies] = useState([]);
 	const [languages] = useState([]);
+	const navigate = useNavigate();
+
+	const handleBackPress = async () => {
+		try {
+			const movies = await searchMovies(searchPhrase, page);
+			if (movies) {
+				setSearchResult(movies.data.results);
+				setTotalPages(movies.data.total_pages);
+				navigate(`/movies?query=${searchPhrase}&page=${page}`);
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	useEffect(() => {
 		fetchMovieDetails(movieId)
 			.then((details) => {
-				console.log();
 				setMovieDetails(details.data);
 				details.data.genres &&
 					details.data.genres.map((genre) => {
@@ -38,7 +56,14 @@ export const MovieDetails = () => {
 
 	return (
 		<div className="movie-container">
-			<ArrowBack />
+			<IconButton
+				type="button"
+				sx={{ p: '10px' }}
+				className="back-button"
+				onClick={handleBackPress}
+			>
+				<ArrowBack />
+			</IconButton>
 			<img
 				src={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
 				className="poster"

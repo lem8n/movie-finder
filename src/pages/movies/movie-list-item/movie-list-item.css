@@ -4,12 +4,17 @@
     position: relative;
     background: rgba(255, 255, 255, 0.8);
     border-radius: 10px;
+    cursor: pointer;
 }
 
 .movie-img {
     margin: 10px;
     border-radius: 10px;
     height: 180px;
+}
+
+.movie-img:hover {
+    transform: translateY(-2px);
 }
 
 .movie-card {
